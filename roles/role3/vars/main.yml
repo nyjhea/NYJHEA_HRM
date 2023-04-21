@@ -1,5 +1,8 @@
 ---
 # vars file for /etc/ansible/roles/role3
 var_package: firewalld
-var_service: ssh
+var_zone: zona
+var_service1: ssh
+var_service2: samba
+var_port: 4312/tcp
 

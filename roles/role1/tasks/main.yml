@@ -9,7 +9,7 @@
   ansible.builtin.service:
     name: "{{var_service}}"
     state: started
-    enable: true
+    enabled: true
 
 - name: Samba on firewall
   ansible.builtin.file:

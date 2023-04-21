@@ -11,22 +11,39 @@
     state: started
     enabled: true
 
-- name: Add firewalld service for ssh
-  ansible.builtin.firewalld:
-    service: "{{var_service}}"
+- name: Create zone
+  ansible.posix.firewalld:
+    zone: "{{ var_zone }}"
+    state: present
+    permanent: true
+
+- name: Allow samba and ssh on specific port
+  ansible.posix.firewalld:
+    zone: "{{ var_zone }}"
+    service: "{{ var_service1 }}"
     permanent: true
     state: enabled
-    immediate: true
 
-- name: Add firewalld service for samba
-  ansible.builtin.firewalld:
-    port: "4312/tcp"
+- name: Allow samba and ssh on specific port
+  ansible.posix.firewalld:
+    zone: "{{ var_zone }}"
+    service: "{{ var_service2 }}"
     permanent: true
     state: enabled
-    immediate: true
 
-- name: Set default firewalld zone to reject 
-  ansible.builtin.firewalld:
-    default_zone: reject
-    immediate: true
+
+- name: Add port to firewall zone
+  ansible.posix.firewalld:
+    zone: "{{ var_zone }}"
+    port: "{{ var_port }}"
+    permanent: true
+    state: enabled
+
+- name: Set zone to reject
+  ansible.posix.firewalld:
+    zone: "{{ var_zone }}"
+    state: present
+    permanent: true
+    target: '%%REJECT%%'
   notify: restart firewalld
+
